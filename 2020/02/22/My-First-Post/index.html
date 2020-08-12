@@ -6,22 +6,22 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>使用kubeadm部署kubernetes集群 | Hexo</title>
+  <title>使用kubeadm部署kubernetes集群 | MyBlog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="1.准备工作1.1 环境信息OS : Ubuntu 18.04 LTS    机器名称 ip地址    master 192.168.105.214   node1 192.168.105.215   node2 192.168.105.216   node3 192.168.105.217   node4 192.168.105.218   node5 192.168.105.219   这里注">
 <meta property="og:type" content="article">
 <meta property="og:title" content="使用kubeadm部署kubernetes集群">
 <meta property="og:url" content="http://yoursite.com/2020/02/22/My-First-Post/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:site_name" content="MyBlog">
 <meta property="og:description" content="1.准备工作1.1 环境信息OS : Ubuntu 18.04 LTS    机器名称 ip地址    master 192.168.105.214   node1 192.168.105.215   node2 192.168.105.216   node3 192.168.105.217   node4 192.168.105.218   node5 192.168.105.219   这里注">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-02-22T14:28:57.000Z">
-<meta property="article:modified_time" content="2020-02-23T01:27:28.360Z">
-<meta property="article:author" content="John Doe">
+<meta property="article:modified_time" content="2020-08-12T08:17:55.603Z">
+<meta property="article:author" content="Yuxq">
 <meta property="article:tag" content="K8S">
 <meta name="twitter:card" content="summary">
   
-    <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
+    <link rel="alternative" href="/atom.xml" title="MyBlog" type="application/atom+xml">
   
   
     <link rel="icon" href="/favicon.png">
@@ -51,7 +51,7 @@
 			<img src="" class="js-avatar">
 		</a>
 		<hgroup>
-		  <h1 class="header-author"><a href="/">John Doe</a></h1>
+		  <h1 class="header-author"><a href="/">Yuxq</a></h1>
 		</hgroup>
 		
 
@@ -109,7 +109,7 @@
 				<img src="" class="js-avatar">
 			</div>
 			<hgroup>
-			  <h1 class="header-author js-header-author">John Doe</h1>
+			  <h1 class="header-author js-header-author">Yuxq</h1>
 			</hgroup>
 			
 			
@@ -210,6 +210,8 @@
 </tbody></table>
 <p>这里注意，如果是申请的虚拟机，请一定注意机器名称，申请的虚拟机默认的名称都是一样的，需要修改成不同的名称，否则在最后其他节点加入集群时会出现问题。</p>
 <p>注意，部署Kubernetes集群需要root权限</p>
+<a id="more"></a>
+
 <h3 id="1-2-关闭防火墙"><a href="#1-2-关闭防火墙" class="headerlink" title="1.2 关闭防火墙"></a>1.2 关闭防火墙</h3><p>关闭ufw防火墙，Ubuntu默认未开启，若开启将其关闭</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo ufw disable</span><br></pre></td></tr></table></figure>
 
@@ -446,7 +448,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2020 John Doe
+    		&copy; 2020 Yuxq
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten

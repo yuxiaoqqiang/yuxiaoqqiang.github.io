@@ -6,17 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Hexo</title>
+  <title>MyBlog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
+<meta property="og:title" content="MyBlog">
 <meta property="og:url" content="http://yoursite.com/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:site_name" content="MyBlog">
 <meta property="og:locale" content="en_US">
-<meta property="article:author" content="John Doe">
+<meta property="article:author" content="Yuxq">
 <meta name="twitter:card" content="summary">
   
-    <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
+    <link rel="alternative" href="/atom.xml" title="MyBlog" type="application/atom+xml">
   
   
     <link rel="icon" href="/favicon.png">
@@ -46,7 +46,7 @@
 			<img src="" class="js-avatar">
 		</a>
 		<hgroup>
-		  <h1 class="header-author"><a href="/">John Doe</a></h1>
+		  <h1 class="header-author"><a href="/">Yuxq</a></h1>
 		</hgroup>
 		
 
@@ -104,7 +104,7 @@
 				<img src="" class="js-avatar">
 			</div>
 			<hgroup>
-			  <h1 class="header-author js-header-author">John Doe</h1>
+			  <h1 class="header-author js-header-author">Yuxq</h1>
 			</hgroup>
 			
 			
@@ -172,31 +172,13 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="sysbench测试Mysql"><a href="#sysbench测试Mysql" class="headerlink" title="sysbench测试Mysql"></a>sysbench测试Mysql</h1><h2 id="准备工作："><a href="#准备工作：" class="headerlink" title="准备工作："></a>准备工作：</h2><p>ubuntu18.04</p>
+        <h2 id="准备工作："><a href="#准备工作：" class="headerlink" title="准备工作："></a>准备工作：</h2><p>ubuntu18.04</p>
 <p>docker</p>
 <p>MySQL 5.7</p>
 <p>sysbench 1.1.0</p>
-<h2 id="1-安装sysbench"><a href="#1-安装sysbench" class="headerlink" title="1. 安装sysbench"></a>1. 安装sysbench</h2><p>代码下载</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https:&#x2F;&#x2F;github.com&#x2F;akopytov&#x2F;sysbench &#x2F;</span><br></pre></td></tr></table></figure>
-
-<p>安装依赖</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">apt -y install make automake libtool pkg-config libaio-dev</span><br><span class="line"># For MySQL support</span><br><span class="line">apt -y install libmysqlclient-dev libssl-dev</span><br><span class="line"># For PostgreSQL support</span><br><span class="line">apt -y install libpq-dev</span><br></pre></td></tr></table></figure>
-
-<p>安装</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">.&#x2F;autogen.sh</span><br><span class="line"># Add --with-pgsql to build with PostgreSQL support</span><br><span class="line">.&#x2F;configure</span><br><span class="line">make -j</span><br><span class="line">make install #sudo</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="2-安装mysql"><a href="#2-安装mysql" class="headerlink" title="2. 安装mysql"></a>2. 安装mysql</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker pull mysql:5.7</span><br><span class="line"></span><br><span class="line">docker run -d -p 3306:3306 --name mysql -e MYSQL_ROOT_PASSWORD&#x3D;XXXXXX mysql:5.7</span><br><span class="line">#这里不设置挂载</span><br></pre></td></tr></table></figure>
-
-<h2 id="3-配置MySQL"><a href="#3-配置MySQL" class="headerlink" title="3. 配置MySQL"></a>3. 配置MySQL</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it mysql &#x2F;bin&#x2F;bash</span><br><span class="line"></span><br><span class="line">mysql -u root -p</span><br><span class="line">#这里需要输入启动时设置的密码</span><br><span class="line"></span><br><span class="line">#设置root用户在任何地方进行远程登录，并具有所有库任何操作权限，（公司绝对不能这么做，暴露的攻击面太大），这里只是做测试。</span><br><span class="line">mysql&gt; GRANT ALL PRIVILEGES ON *.* TO &#39;root&#39;@&#39;%&#39; IDENTIFIED BY &#39;XXXXXX&#39; WITH GRANT OPTION;</span><br><span class="line">Query OK, 0 rows affected, 1 warning (0.00 sec)</span><br><span class="line"></span><br><span class="line"># 刷新权限</span><br><span class="line">mysql&gt; FLUSH PRIVILEGES;</span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">#create一个database用于测试</span><br><span class="line">mysql&gt; create database sysbench; </span><br><span class="line">Query OK, 1 row affected (0.00 sec)</span><br></pre></td></tr></table></figure>
-
-<h2 id="4-测试Mysql"><a href="#4-测试Mysql" class="headerlink" title="4. 测试Mysql"></a>4. 测试Mysql</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">cd &#x2F;usr&#x2F;local&#x2F;share&#x2F;sysbench</span><br><span class="line">#有各种测试方式，可用ls查看，这里选择oltp_read_write.lua</span><br><span class="line"></span><br><span class="line">#prepare阶段</span><br><span class="line">sysbench oltp_read_write.lua tables&#x3D;10 table-size&#x3D;100000 --threads&#x3D;10 --time&#x3D;120 --report-interval&#x3D;5 --rand-type&#x3D;uniform --db-driver&#x3D;mysql --mysql-db&#x3D;sysbench --mysql-user&#x3D;root --mysql-password&#x3D;XXXXXX --mysql-host&#x3D;192.168.xxx.xxx --mysql-port&#x3D;3306 prepare</span><br><span class="line">#10个表、每个表大小100000，10个线程，最长执行时间120s，每隔5s打印信息，随机类型设置为uniform，后面就是对mysql的设置</span><br><span class="line"></span><br><span class="line">#run阶段</span><br><span class="line">sysbench oltp_read_write.lua tables&#x3D;10 table-size&#x3D;100000 --threads&#x3D;10 --time&#x3D;120 --report-interval&#x3D;5 --rand-type&#x3D;uniform --db-driver&#x3D;mysql --mysql-db&#x3D;sysbench --mysql-user&#x3D;root --mysql-password&#x3D;XXXXXX --mysql-host&#x3D;192.168.xxx.xxx --mysql-port&#x3D;3306 run &gt;&gt; &#x2F;test.log</span><br><span class="line">#将执行过程中的信息打印到test.log</span><br></pre></td></tr></table></figure>
-
-<p>执行完毕后，通过分析test.log了解MySQL性能</p>
-<h2 id="5-结束测试"><a href="#5-结束测试" class="headerlink" title="5. 结束测试"></a>5. 结束测试</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#cleanup阶段</span><br><span class="line">sysbench oltp_read_write.lua tables&#x3D;10 table-size&#x3D;100000 --threads&#x3D;10 --time&#x3D;120 --report-interval&#x3D;5 --rand-type&#x3D;uniform --db-driver&#x3D;mysql --mysql-db&#x3D;sysbench --mysql-user&#x3D;root --mysql-password&#x3D;XXXXXX --mysql-host&#x3D;192.168.xxx.xxx --mysql-port&#x3D;3306 cleanup</span><br><span class="line">#每次测试完要记得cleanup，不然会影响下次测试</span><br></pre></td></tr></table></figure>
-
-
+        
+          <a class="article-more-a" href="/2020/08/12/sysbench%E6%B5%8B%E8%AF%95mysql/#more">more >></a>
+        
       
 
       
@@ -304,85 +286,9 @@
 </tbody></table>
 <p>这里注意，如果是申请的虚拟机，请一定注意机器名称，申请的虚拟机默认的名称都是一样的，需要修改成不同的名称，否则在最后其他节点加入集群时会出现问题。</p>
 <p>注意，部署Kubernetes集群需要root权限</p>
-<h3 id="1-2-关闭防火墙"><a href="#1-2-关闭防火墙" class="headerlink" title="1.2 关闭防火墙"></a>1.2 关闭防火墙</h3><p>关闭ufw防火墙，Ubuntu默认未开启，若开启将其关闭</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo ufw disable</span><br></pre></td></tr></table></figure>
-
-<p>备注：ufw的底层是使用iptables进行数据过滤，建立在iptables之上，这可能会与Docker产生冲突</p>
-<h3 id="1-3-禁用SELINUX"><a href="#1-3-禁用SELINUX" class="headerlink" title="1.3 禁用SELINUX"></a>1.3 禁用SELINUX</h3><p>Ubuntu默认不安装selinux，若安装了的话，采用如下步骤禁用</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo vim &#x2F;etc&#x2F;selinux&#x2F;config</span><br><span class="line">SELINUX&#x3D;permissive</span><br></pre></td></tr></table></figure>
-
-<h3 id="1-4-开启内核ipv4转发"><a href="#1-4-开启内核ipv4转发" class="headerlink" title="1.4 开启内核ipv4转发"></a>1.4 开启内核ipv4转发</h3><p>修改/etc/sysctl.conf，开启ipv4转发</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ sudo vim &#x2F;etc&#x2F;sysctl.conf</span><br><span class="line">net.ipv4.ip_forward &#x3D; 1 #开启ipv4转发，允许内置路由</span><br><span class="line"></span><br><span class="line">$ sudo sysctl -p</span><br></pre></td></tr></table></figure>
-<h3 id="1-5-禁用swap分区"><a href="#1-5-禁用swap分区" class="headerlink" title="1.5 禁用swap分区"></a>1.5 禁用swap分区</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo swapoff -a</span><br></pre></td></tr></table></figure>
-
-<p>还需修改/etc/fstab文件，注释掉swap的自动挂载，防止重启后swap启用。</p>
-<h3 id="1-6-配置iptables参数"><a href="#1-6-配置iptables参数" class="headerlink" title="1.6 配置iptables参数"></a>1.6 配置iptables参数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ sudo tee &#x2F;etc&#x2F;sysctl.d&#x2F;k8s.conf &lt;&lt;-&#39;EOF&#39;</span><br><span class="line">net.bridge.bridge-nf-call-ip6tables &#x3D; 1</span><br><span class="line">net.bridge.bridge-nf-call-iptables &#x3D; 1</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">$ sudo sysctl --system</span><br></pre></td></tr></table></figure>
-<p>配置iptables参数，使得流经网桥的流量也经过iptables/netfilter防火墙</p>
-<h3 id="1-7-配置免密登录"><a href="#1-7-配置免密登录" class="headerlink" title="1.7 配置免密登录"></a>1.7 配置免密登录</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd &#x2F;   # cd到根目录下</span><br><span class="line">ssh-keygen -t rsa -P &quot;&quot;  # 一路回车</span><br><span class="line">ssh-copy-id xxx.xx.xx.xx  #设置你要免密登录的机器IP，输入密码即可完成</span><br></pre></td></tr></table></figure>
-
-<h2 id="2-安装docker"><a href="#2-安装docker" class="headerlink" title="2 安装docker"></a>2 安装docker</h2><h3 id="2-1-卸载旧docker"><a href="#2-1-卸载旧docker" class="headerlink" title="2.1 卸载旧docker"></a>2.1 卸载旧docker</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get remove docker docker-engine docker.io</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-2-安装依赖"><a href="#2-2-安装依赖" class="headerlink" title="2.2 安装依赖"></a>2.2 安装依赖</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install \</span><br><span class="line">    apt-transport-https \</span><br><span class="line">    ca-certificates \</span><br><span class="line">    curl \</span><br><span class="line">    software-properties-common</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-3-添加docker的GPG-key"><a href="#2-3-添加docker的GPG-key" class="headerlink" title="2.3 添加docker的GPG key"></a>2.3 添加docker的GPG key</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -fsSL https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;docker-ce&#x2F;linux&#x2F;ubuntu&#x2F;gpg | sudo apt-key add -</span><br></pre></td></tr></table></figure>
-<p>这里使用阿里云的地址</p>
-<h3 id="2-4-设置docker镜像源"><a href="#2-4-设置docker镜像源" class="headerlink" title="2.4 设置docker镜像源"></a>2.4 设置docker镜像源</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ sudo add-apt-repository \</span><br><span class="line">   &quot;deb [arch&#x3D;amd64] https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;docker-ce&#x2F;linux&#x2F;ubuntu \</span><br><span class="line">   $(lsb_release -cs) \</span><br><span class="line">   stable&quot;</span><br></pre></td></tr></table></figure>
-<p>这里使用阿里云的镜像源</p>
-<h3 id="2-5-安装指定版本docker-ce"><a href="#2-5-安装指定版本docker-ce" class="headerlink" title="2.5 安装指定版本docker-ce"></a>2.5 安装指定版本docker-ce</h3><p>查看源中都有哪些版本：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ apt-cache madison docker-ce</span><br><span class="line">docker-ce | 18.06.3~ce~3-0~ubuntu | https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;docker-ce&#x2F;linux&#x2F;ubuntu bionic&#x2F;stable amd64 Packages</span><br><span class="line">docker-ce | 18.06.2~ce~3-0~ubuntu | https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;docker-ce&#x2F;linux&#x2F;ubuntu bionic&#x2F;stable amd64 Packages</span><br><span class="line">docker-ce | 18.06.1~ce~3-0~ubuntu | https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;docker-ce&#x2F;linux&#x2F;ubuntu bionic&#x2F;stable amd64 Packages</span><br><span class="line">docker-ce | 18.06.0~ce~3-0~ubuntu | https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;docker-ce&#x2F;linux&#x2F;ubuntu bionic&#x2F;stable amd64 Packages</span><br><span class="line">docker-ce | 18.03.1~ce~3-0~ubuntu | https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;docker-ce&#x2F;linux&#x2F;ubuntu bionic&#x2F;stable amd64 Packages</span><br></pre></td></tr></table></figure>
-<p>安装18.06.3-ce版本</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get install -y docker-ce&#x3D;18.06.3~ce~3-0~ubuntu</span><br></pre></td></tr></table></figure>
-<h3 id="2-6-启动并设置开机自启动docker"><a href="#2-6-启动并设置开机自启动docker" class="headerlink" title="2.6 启动并设置开机自启动docker"></a>2.6 启动并设置开机自启动docker</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo systemctl enable docker &amp;&amp; sudo systemctl start docker</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-7-将当前登录用户加入docker用户组中"><a href="#2-7-将当前登录用户加入docker用户组中" class="headerlink" title="2.7 将当前登录用户加入docker用户组中"></a>2.7 将当前登录用户加入docker用户组中</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo usermod -aG docker xxx #用户名</span><br></pre></td></tr></table></figure>
-<p>然后退出，重新登录，使用docker命令就不用加sudo了。</p>
-<h3 id="2-8-docker启动参数配置"><a href="#2-8-docker启动参数配置" class="headerlink" title="2.8 docker启动参数配置"></a>2.8 docker启动参数配置</h3><p>为docker做如下配置：</p>
-<p>设置docker的cgroup driver为systemd，与kubelet保持一致。</p>
-<p>设置阿里云镜像库加速dockerhub的镜像。国内访问dockerhub不稳定，将对dockerhub的镜像拉取代理到阿里云镜像库(xxxxx替换为阿里云生成的镜像代理仓库地址)</p>
-<p>禁用iptables</p>
-<p>如果想让podIP可路由的话，设置docker不再对podIP做MASQUERADE，否则docker会将podIP这个源地址SNAT成nodeIP</p>
-<p>设置docker存储驱动为overlay2（需要linux kernel版本在4.0以上，docker版本大于1.12）</p>
-<p>根据业务规划修改容器实例存储根路径（默认路径是/var/lib/docker）</p>
-<p>最终配置如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$ sudo tee &#x2F;etc&#x2F;docker&#x2F;daemon.json &lt;&lt;-&#39;EOF&#39;</span><br><span class="line">&#123;</span><br><span class="line"> &quot;exec-opts&quot;:[&quot;native.cgroupdriver&#x3D;systemd&quot;],</span><br><span class="line"> &quot;registry-mirrors&quot;: [&quot;https:&#x2F;&#x2F;xxxxxxx.mirror.aliyuncs.com&quot;],</span><br><span class="line"> &quot;iptables&quot;: false,</span><br><span class="line"> &quot;ip-masq&quot;: false,</span><br><span class="line"> &quot;storage-driver&quot;: &quot;overlay2&quot;,</span><br><span class="line"> &quot;graph&quot;: &quot;&#x2F;docker&quot;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">$ sudo systemctl restart docker</span><br></pre></td></tr></table></figure>
-<h2 id="3-安装kubeadm、kubelet、kubectl"><a href="#3-安装kubeadm、kubelet、kubectl" class="headerlink" title="3 安装kubeadm、kubelet、kubectl"></a>3 安装kubeadm、kubelet、kubectl</h2><h3 id="3-1-创建kubernetes的repo"><a href="#3-1-创建kubernetes的repo" class="headerlink" title="3.1 创建kubernetes的repo"></a>3.1 创建kubernetes的repo</h3><p>创建kubernetes的source文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update &amp;&amp; sudo apt-get install -y apt-transport-https curl</span><br><span class="line"></span><br><span class="line">sudo curl -s https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;kubernetes&#x2F;apt&#x2F;doc&#x2F;apt-key.gpg | sudo apt-key add -</span><br><span class="line"></span><br><span class="line">sudo tee &#x2F;etc&#x2F;apt&#x2F;sources.list.d&#x2F;kubernetes.list &lt;&lt;-&#39;EOF&#39;</span><br><span class="line">deb https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;kubernetes&#x2F;apt kubernetes-xenial main</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">sudo apt-get update</span><br></pre></td></tr></table></figure>
-<p>这里使用阿里云的镜像站</p>
-<h3 id="3-2-安装kubeadm、kubelet、kubectl"><a href="#3-2-安装kubeadm、kubelet、kubectl" class="headerlink" title="3.2 安装kubeadm、kubelet、kubectl"></a>3.2 安装kubeadm、kubelet、kubectl</h3><p>查看可用软件版本</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ apt-cache madison kubeadm</span><br><span class="line">kubeadm |  1.16.3-00 | https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;kubernetes&#x2F;apt kubernetes-xenial&#x2F;main amd64 Packages</span><br><span class="line">kubeadm |  1.16.2-00 | https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;kubernetes&#x2F;apt kubernetes-xenial&#x2F;main amd64 Packages</span><br><span class="line">kubeadm |  1.16.1-00 | https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;kubernetes&#x2F;apt kubernetes-xenial&#x2F;main amd64 Packages</span><br><span class="line">kubeadm |  1.16.0-00 | https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;kubernetes&#x2F;apt kubernetes-xenial&#x2F;main amd64 Packages</span><br></pre></td></tr></table></figure>
-
-<p>这里安装1.16.0版本</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get install -y kubelet&#x3D;1.16.0-00 kubeadm&#x3D;1.16.0-00 kubectl&#x3D;1.16.0-00</span><br><span class="line">$ sudo apt-mark hold kubelet&#x3D;1.16.0-00 kubeadm&#x3D;1.16.0-00 kubectl&#x3D;1.16.0-00</span><br></pre></td></tr></table></figure>
-<p>设置开机自启动并运行kubelet</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl enable kubelet &amp;&amp; sudo systemctl start kubelet</span><br></pre></td></tr></table></figure>
-
-<h2 id="4-kubernetes集群安装"><a href="#4-kubernetes集群安装" class="headerlink" title="4 kubernetes集群安装"></a>4 kubernetes集群安装</h2><h3 id="4-1-master节点部署"><a href="#4-1-master节点部署" class="headerlink" title="4.1 master节点部署"></a>4.1 master节点部署</h3><h4 id="4-1-1-提前看一下kubernetes-V1-16-0需要的镜像"><a href="#4-1-1-提前看一下kubernetes-V1-16-0需要的镜像" class="headerlink" title="4.1.1 提前看一下kubernetes V1.16.0需要的镜像"></a>4.1.1 提前看一下kubernetes V1.16.0需要的镜像</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ kubeadm config images list --kubernetes-version&#x3D;v1.16.0</span><br><span class="line">k8s.gcr.io&#x2F;kube-apiserver:v1.16.0</span><br><span class="line">k8s.gcr.io&#x2F;kube-controller-manager:v1.16.0</span><br><span class="line">k8s.gcr.io&#x2F;kube-scheduler:v1.16.0</span><br><span class="line">k8s.gcr.io&#x2F;kube-proxy:v1.16.0</span><br><span class="line">k8s.gcr.io&#x2F;pause:3.1</span><br><span class="line">k8s.gcr.io&#x2F;etcd:3.3.15-0</span><br><span class="line">k8s.gcr.io&#x2F;coredns:1.6.2</span><br></pre></td></tr></table></figure>
-
-<p>使用脚本<code>pull-iamges.sh</code>处理镜像</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#!&#x2F;bin&#x2F;bash</span><br><span class="line">images&#x3D;(kube-proxy:v1.16.0 kube-scheduler:v1.16.0 kube-controller-manager:v1.16.0 kube-apiserver:v1.16.0 etcd:3.3.15-0 pause:3.1 coredns:1.6.2)</span><br><span class="line">for imageName in $&#123;images[@]&#125; ; do</span><br><span class="line">        docker pull registry.cn-hangzhou.aliyuncs.com&#x2F;google_containers&#x2F;$imageName</span><br><span class="line">        docker tag registry.cn-hangzhou.aliyuncs.com&#x2F;google_containers&#x2F;$imageName k8s.gcr.io&#x2F;$imageName</span><br><span class="line">        docker rmi registry.cn-hangzhou.aliyuncs.com&#x2F;google_containers&#x2F;$imageName</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
-<h4 id="4-1-2-kubeadm-init"><a href="#4-1-2-kubeadm-init" class="headerlink" title="4.1.2 kubeadm init"></a>4.1.2 kubeadm init</h4><p>使用命令行初始化master节点</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo kubeadm init --apiserver-advertise-address&#x3D;192.168.105.214 --pod-network-cidr&#x3D;172.16.0.0&#x2F;16 --service-cidr&#x3D;10.233.0.0&#x2F;16 --kubernetes-version&#x3D;v1.16.0</span><br></pre></td></tr></table></figure>
-
-<p>部署成功输出如下内容</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Your Kubernetes master has initialized successfully!</span><br><span class="line"></span><br><span class="line">To start using your cluster, you need to run the following as a regular user:</span><br><span class="line"></span><br><span class="line">  mkdir -p $HOME&#x2F;.kube</span><br><span class="line">  sudo cp -i &#x2F;etc&#x2F;kubernetes&#x2F;admin.conf $HOME&#x2F;.kube&#x2F;config</span><br><span class="line">  sudo chown $(id -u):$(id -g) $HOME&#x2F;.kube&#x2F;config</span><br><span class="line"></span><br><span class="line">You should now deploy a pod network to the cluster.</span><br><span class="line">Run &quot;kubectl apply -f [podnetwork].yaml&quot; with one of the options listed at:</span><br><span class="line">  https:&#x2F;&#x2F;kubernetes.io&#x2F;docs&#x2F;concepts&#x2F;cluster-administration&#x2F;addons&#x2F;</span><br><span class="line"></span><br><span class="line">You can now join any number of machines by running the following on each node</span><br><span class="line">as root:</span><br><span class="line"></span><br><span class="line"> kubeadm join 192.168.105.214:6443 --token xxxxxxxxxxx</span><br></pre></td></tr></table></figure>
-<p>记下<code>kubeadm join</code>这条命令，一会node节点需要这条命令加入集群</p>
-<h4 id="4-1-3-创建kubectl使用的kubeconfig文件"><a href="#4-1-3-创建kubectl使用的kubeconfig文件" class="headerlink" title="4.1.3 创建kubectl使用的kubeconfig文件"></a>4.1.3 创建kubectl使用的kubeconfig文件</h4><p>根据提示创建kubectl的config文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p $HOME&#x2F;.kube</span><br><span class="line">sudo cp -i &#x2F;etc&#x2F;kubernetes&#x2F;admin.conf $HOME&#x2F;.kube&#x2F;config</span><br><span class="line">sudo chown $(id -u):$(id -g) $HOME&#x2F;.kube&#x2F;config</span><br></pre></td></tr></table></figure>
-
-<h4 id="4-1-4-设置master参与工作负载"><a href="#4-1-4-设置master参与工作负载" class="headerlink" title="4.1.4 设置master参与工作负载"></a>4.1.4 设置master参与工作负载</h4><p>使用kubeadm初始化的集群，将master节点做了taint（污点），使得默认情况下（不设置容忍）Pod不会被调度到master上。这里搭建的是测试环境可以使用下面的命令去掉master的taint，使master参与工作负载：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl taint nodes --all node-role.kubernetes.io&#x2F;master-</span><br></pre></td></tr></table></figure>
-
-<h3 id="4-2-网络部署"><a href="#4-2-网络部署" class="headerlink" title="4.2 网络部署"></a>4.2 网络部署</h3><h4 id="4-2-1-获取yml文件"><a href="#4-2-1-获取yml文件" class="headerlink" title="4.2.1 获取yml文件"></a>4.2.1 获取yml文件</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;coreos&#x2F;flannel&#x2F;master&#x2F;Documentation&#x2F;kube-flannel.yml</span><br></pre></td></tr></table></figure>
-<h4 id="4-2-2-修改配置文件"><a href="#4-2-2-修改配置文件" class="headerlink" title="4.2.2 修改配置文件"></a>4.2.2 修改配置文件</h4><p>修改其中<code>net-conf.json</code>中的<code>Network</code>参数使其与<code>kubeadm init</code>时指定的<code>--pod-network-cidr</code>保持一致</p>
-<h4 id="4-2-3-镜像下载，执行下面flannel-sh"><a href="#4-2-3-镜像下载，执行下面flannel-sh" class="headerlink" title="4.2.3 镜像下载，执行下面flannel.sh"></a>4.2.3 镜像下载，执行下面flannel.sh</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#!&#x2F;bin&#x2F;bash</span><br><span class="line">docker pull jmgao1983&#x2F;flannel:v0.11.0-amd64</span><br><span class="line">docker tag jmgao1983&#x2F;flannel:v0.11.0-amd64 quay.io&#x2F;coreos&#x2F;flannel:v0.11.0-amd64</span><br><span class="line">docker rmi jmgao1983&#x2F;flannel:v0.11.0-amd64</span><br></pre></td></tr></table></figure>
-
-<h4 id="4-2-4-部署"><a href="#4-2-4-部署" class="headerlink" title="4.2.4 部署"></a>4.2.4 部署</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f kube-flannel.yml</span><br></pre></td></tr></table></figure>
-
-<h3 id="4-3-node节点部署"><a href="#4-3-node节点部署" class="headerlink" title="4.3 node节点部署"></a>4.3 node节点部署</h3><p>同样按照上述步骤安装好docker、kubelet，然后在node节点上执行以下命令即可加入集群</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo kubeadm join 192.168.105.214:6443 --token xxxxxxx</span><br></pre></td></tr></table></figure>
-
-<p>默认token的有效期为24小时，当过期之后，该token就不可用了。此时可以重新生成token:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubeadm token generate</span><br><span class="line">kubeadm token create &lt;generated-token&gt; --print-join-command --ttl&#x3D;0</span><br></pre></td></tr></table></figure>
+        
+          <a class="article-more-a" href="/2020/02/22/My-First-Post/#more">more >></a>
+        
       
 
       
@@ -520,7 +426,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2020 John Doe
+    		&copy; 2020 Yuxq
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
