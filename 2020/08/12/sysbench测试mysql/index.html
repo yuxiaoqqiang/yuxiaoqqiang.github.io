@@ -6,14 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Tag: K8S | Hexo</title>
+  <title>sysbench测试mysql | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://yoursite.com/tags/K8S/index.html">
+  <meta name="description" content="sysbench测试Mysql准备工作：ubuntu18.04 docker MySQL 5.7 sysbench 1.1.0 1. 安装sysbench代码下载 1git clone https:&#x2F;&#x2F;github.com&#x2F;akopytov&#x2F;sysbench &#x2F;  安装依赖 12345apt -y install make automake lib">
+<meta property="og:type" content="article">
+<meta property="og:title" content="sysbench测试mysql">
+<meta property="og:url" content="http://yoursite.com/2020/08/12/sysbench%E6%B5%8B%E8%AF%95mysql/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="sysbench测试Mysql准备工作：ubuntu18.04 docker MySQL 5.7 sysbench 1.1.0 1. 安装sysbench代码下载 1git clone https:&#x2F;&#x2F;github.com&#x2F;akopytov&#x2F;sysbench &#x2F;  安装依赖 12345apt -y install make automake lib">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-08-12T07:45:34.000Z">
+<meta property="article:modified_time" content="2020-08-12T08:04:14.220Z">
 <meta property="article:author" content="John Doe">
+<meta property="article:tag" content="sysbench">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
@@ -150,60 +155,190 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-sysbench测试mysql" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/02/22/My-First-Post/" class="archive-article-date">
-  	<time datetime="2020-02-22T14:28:57.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-02-22</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/02/22/My-First-Post/">使用kubeadm部署kubernetes集群</a>
+    <h1 class="article-title" itemprop="name">
+      sysbench测试mysql
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2020/08/12/sysbench%E6%B5%8B%E8%AF%95mysql/" class="archive-article-date">
+  	<time datetime="2020-08-12T07:45:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-12</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="sysbench测试Mysql"><a href="#sysbench测试Mysql" class="headerlink" title="sysbench测试Mysql"></a>sysbench测试Mysql</h1><h2 id="准备工作："><a href="#准备工作：" class="headerlink" title="准备工作："></a>准备工作：</h2><p>ubuntu18.04</p>
+<p>docker</p>
+<p>MySQL 5.7</p>
+<p>sysbench 1.1.0</p>
+<h2 id="1-安装sysbench"><a href="#1-安装sysbench" class="headerlink" title="1. 安装sysbench"></a>1. 安装sysbench</h2><p>代码下载</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https:&#x2F;&#x2F;github.com&#x2F;akopytov&#x2F;sysbench &#x2F;</span><br></pre></td></tr></table></figure>
+
+<p>安装依赖</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">apt -y install make automake libtool pkg-config libaio-dev</span><br><span class="line"># For MySQL support</span><br><span class="line">apt -y install libmysqlclient-dev libssl-dev</span><br><span class="line"># For PostgreSQL support</span><br><span class="line">apt -y install libpq-dev</span><br></pre></td></tr></table></figure>
+
+<p>安装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">.&#x2F;autogen.sh</span><br><span class="line"># Add --with-pgsql to build with PostgreSQL support</span><br><span class="line">.&#x2F;configure</span><br><span class="line">make -j</span><br><span class="line">make install #sudo</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="2-安装mysql"><a href="#2-安装mysql" class="headerlink" title="2. 安装mysql"></a>2. 安装mysql</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker pull mysql:5.7</span><br><span class="line"></span><br><span class="line">docker run -d -p 3306:3306 --name mysql -e MYSQL_ROOT_PASSWORD&#x3D;XXXXXX mysql:5.7</span><br><span class="line">#这里不设置挂载</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-配置MySQL"><a href="#3-配置MySQL" class="headerlink" title="3. 配置MySQL"></a>3. 配置MySQL</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it mysql &#x2F;bin&#x2F;bash</span><br><span class="line"></span><br><span class="line">mysql -u root -p</span><br><span class="line">#这里需要输入启动时设置的密码</span><br><span class="line"></span><br><span class="line">#设置root用户在任何地方进行远程登录，并具有所有库任何操作权限，（公司绝对不能这么做，暴露的攻击面太大），这里只是做测试。</span><br><span class="line">mysql&gt; GRANT ALL PRIVILEGES ON *.* TO &#39;root&#39;@&#39;%&#39; IDENTIFIED BY &#39;XXXXXX&#39; WITH GRANT OPTION;</span><br><span class="line">Query OK, 0 rows affected, 1 warning (0.00 sec)</span><br><span class="line"></span><br><span class="line"># 刷新权限</span><br><span class="line">mysql&gt; FLUSH PRIVILEGES;</span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">#create一个database用于测试</span><br><span class="line">mysql&gt; create database sysbench; </span><br><span class="line">Query OK, 1 row affected (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-测试Mysql"><a href="#4-测试Mysql" class="headerlink" title="4. 测试Mysql"></a>4. 测试Mysql</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">cd &#x2F;usr&#x2F;local&#x2F;share&#x2F;sysbench</span><br><span class="line">#有各种测试方式，可用ls查看，这里选择oltp_read_write.lua</span><br><span class="line"></span><br><span class="line">#prepare阶段</span><br><span class="line">sysbench oltp_read_write.lua tables&#x3D;10 table-size&#x3D;100000 --threads&#x3D;10 --time&#x3D;120 --report-interval&#x3D;5 --rand-type&#x3D;uniform --db-driver&#x3D;mysql --mysql-db&#x3D;sysbench --mysql-user&#x3D;root --mysql-password&#x3D;XXXXXX --mysql-host&#x3D;192.168.xxx.xxx --mysql-port&#x3D;3306 prepare</span><br><span class="line">#10个表、每个表大小100000，10个线程，最长执行时间120s，每隔5s打印信息，随机类型设置为uniform，后面就是对mysql的设置</span><br><span class="line"></span><br><span class="line">#run阶段</span><br><span class="line">sysbench oltp_read_write.lua tables&#x3D;10 table-size&#x3D;100000 --threads&#x3D;10 --time&#x3D;120 --report-interval&#x3D;5 --rand-type&#x3D;uniform --db-driver&#x3D;mysql --mysql-db&#x3D;sysbench --mysql-user&#x3D;root --mysql-password&#x3D;XXXXXX --mysql-host&#x3D;192.168.xxx.xxx --mysql-port&#x3D;3306 run &gt;&gt; &#x2F;test.log</span><br><span class="line">#将执行过程中的信息打印到test.log</span><br></pre></td></tr></table></figure>
+
+<p>执行完毕后，通过分析test.log了解MySQL性能</p>
+<h2 id="5-结束测试"><a href="#5-结束测试" class="headerlink" title="5. 结束测试"></a>5. 结束测试</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#cleanup阶段</span><br><span class="line">sysbench oltp_read_write.lua tables&#x3D;10 table-size&#x3D;100000 --threads&#x3D;10 --time&#x3D;120 --report-interval&#x3D;5 --rand-type&#x3D;uniform --db-driver&#x3D;mysql --mysql-db&#x3D;sysbench --mysql-user&#x3D;root --mysql-password&#x3D;XXXXXX --mysql-host&#x3D;192.168.xxx.xxx --mysql-port&#x3D;3306 cleanup</span><br><span class="line">#每次测试完要记得cleanup，不然会影响下次测试</span><br></pre></td></tr></table></figure>
+
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">K8S</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">sysbench</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/08/12/sysbench%E6%B5%8B%E8%AF%95mysql/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
   
   
-    </div></section>
+    <a href="/2020/02/22/My-First-Post/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">使用kubeadm部署kubernetes集群</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -226,9 +361,9 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
